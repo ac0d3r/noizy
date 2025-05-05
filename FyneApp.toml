@@ -1,8 +1,8 @@
-Website = "https://github.com/dwisiswant0/noizy"
+Website = "https://github.com/"
 
 [Details]
   Icon = "assets/icon.png"
   Name = "Noizy"
-  ID = "io.dw1.Noizy"
+  ID = "io.zznq.Noizy"
   Version = "1.0.0"
-  Build = 1
+  Build = 6

@@ -1,34 +1,26 @@
 package main
 
 import (
-	"log/slog"
+	"embed"
 
-	"fyne.io/systray"
-	"github.com/gopxl/beep/speaker"
-	"github.com/gopxl/beep/vorbis"
+	"noizy/player"
+	"noizy/ui"
+)
 
-	"github.com/dwisiswant0/noizy/internal/runner"
+//go:embed assets/*
+var assetsFS embed.FS
+
+var (
+	AppName    = "Noizy"
+	AppVersion = "v0.0.1"
 )
 
 func main() {
-	slog.Debug("Initialize runner")
-	r, err := runner.New(sounds)
-	if err != nil {
+	player := player.New()
+	if err := player.Init(); err != nil {
 		panic(err)
 	}
 
-	slog.Debug("Decode single sound file to get sample rate")
-	streamer, format, err := vorbis.Decode(r.Files["brook"])
-	if err != nil {
-		panic(err)
-	}
-	defer streamer.Close()
-
-	slog.Debug("Initialize speaker")
-	err = speaker.Init(format.SampleRate, bufSize)
-	if err != nil {
-		panic(err)
-	}
-
-	systray.Run(r.Ready, nil)
+	app := ui.NewApp(AppName, player, assetsFS)
+	app.Run()
 }
